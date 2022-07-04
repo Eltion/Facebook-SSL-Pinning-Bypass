@@ -5,13 +5,11 @@ Supported ABIs: `x86`, `x86_64`, `armeabi-v7a`, `arm64-v8a`
 
 ## Patched APK (No Root)
 
-[facebook-v369.0.0.18.103-x86-patched](https://github.com/Eltion/Facebook-SSL-Pinning-Bypass/releases/download/v369.0.0.18.103/facebook-v369.0.0.18.103-x86-patched.apk)
+[facebook-v373.0.0.31.112-x86](https://github.com/Eltion/Facebook-SSL-Pinning-Bypass/releases/download/v373.0.0.31.112/facebook-v373.0.0.31.112-x86.apk)
 
-[facebook-v369.0.0.18.103-x86_64-patched](https://github.com/Eltion/Facebook-SSL-Pinning-Bypass/releases/download/v369.0.0.18.103/facebook-v369.0.0.18.103-x86_64-patched.apk)
+[facebook-v373.0.0.31.112-armeabi-v7a](https://github.com/Eltion/Facebook-SSL-Pinning-Bypass/releases/download/v373.0.0.31.112/facebook-v373.0.0.31.112-armeabi-v7a.apk)
 
-[facebook-v369.0.0.18.103-armeabi-v7a-patched.apk](https://github.com/Eltion/Facebook-SSL-Pinning-Bypass/releases/download/v369.0.0.18.103/facebook-v369.0.0.18.103-armeabi-v7a-patched.apk)
-
-[facebook-v369.0.0.18.103-arm64-v8a-patched](https://github.com/Eltion/Facebook-SSL-Pinning-Bypass/releases/download/v369.0.0.18.103/facebook-v369.0.0.18.103-arm64-v8a-patched.apk)
+[facebook-v373.0.0.31.112-arm64-v8a](https://github.com/Eltion/Facebook-SSL-Pinning-Bypass/releases/download/v373.0.0.31.112/facebook-v373.0.0.31.112-arm64-v8a.apk)
 
 [See all versions](https://github.com/Eltion/Facebook-SSL-Pinning-Bypass/releases/)
 
