@@ -98,22 +98,15 @@ def get_app_arch(apk):
 
 def extract_libs_for_apk(apk, arch):
     lib = "libmemalign16.so"
-    if(arch == "arm64-v8a"):
-        with ZipFile(apk) as zip_file:
-            namelist = zip_file.namelist()
-            libname = "lib/{0}/{1}".format(arch, lib)
-            if libname in namelist:
-                print("Extracting:", libname)
-                return zip_file.extract(libname, TEMP_FOLDER)
-    else:
-        libpath = os.path.join(os.getcwd(), "lib/{0}/{1}".format(arch, lib))
-        new_lib_path = os.path.join(TEMP_FOLDER, "lib/{0}/{1}".format(arch, lib))
-        os.makedirs(os.path.dirname(new_lib_path), exist_ok=True)
-        print("Extracting:", libpath)
-        shutil.copy(libpath, new_lib_path)
-        return new_lib_path
-        
-            
+    libpath = os.path.join(os.getcwd(), "lib/{0}/{1}".format(arch, lib))
+    new_lib_path = os.path.join(
+        TEMP_FOLDER, "lib/{0}/{1}".format(arch, lib))
+    os.makedirs(os.path.dirname(new_lib_path), exist_ok=True)
+    print("Extracting:", libpath)
+    shutil.copy(libpath, new_lib_path)
+    return new_lib_path
+
+
 def get_arch(apk):
     app_archs = get_app_arch(apk)
     print("App ABIs: ", app_archs)
@@ -264,7 +257,7 @@ def main():
     for arch in archs:
         print("\nPatching for", arch)
         nativelib = extract_libs_for_apk(temp_apk, arch)
-        #unpack_lib_dynamic_relocations(nativelib)
+        # unpack_lib_dynamic_relocations(nativelib)
         arch_folder = os.path.join(TEMP_FOLDER, "lib", arch)
         download_frida_gadget(arch)
         inject_frida_gadget(nativelib)
