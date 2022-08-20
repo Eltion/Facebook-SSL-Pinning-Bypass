@@ -10,28 +10,9 @@ function hook_proxygen_SSLVerification(library) {
                 retvalue.replace(1);
             }
         });
-        logger(`[*][*] Hooked function: ${functionName}`);
+        logger(`[*][+] Hooked function: ${functionName}`);
     } catch (err) {
-        logger(`[*][*] Failed tp hook function: ${functionName}`);
-        logger(err.toString())
-    }
-
-}
-
-function hook_X509_verify_cert(library) {
-    const functionName = "X509_verify_cert";
-    try {
-        const f = Module.getExportByName(library.name, functionName);
-
-
-        Interceptor.attach(f, {
-            onLeave: function (retvalue) {
-                retvalue.replace(1);
-            }
-        });
-        logger(`[*][*] Hooked function: ${functionName}`);
-    } catch (err) {
-        logger(`[*][*] Failed tp hook function: ${functionName}`);
+        logger(`[*][-] Failed tp hook function: ${functionName}`);
         logger(err.toString())
     }
 
@@ -63,17 +44,25 @@ const libs = ["libcoldstart.so", "libliger-native.so"]
 
 logger("[*][*] Waiting for library...");
 waitForModules(libs).then((lib) => {
-    logger(`[*][*] Found ${lib.name} at: ${lib.base}`)
+    logger(`[*][+] Found ${lib.name} at: ${lib.base}`)
     hook_proxygen_SSLVerification(lib);
-    hook_X509_verify_cert(lib);
 });
 
 //Universal Android SSL Pinning Bypass #2
 Java.perform(function () {
-    var array_list = Java.use("java.util.ArrayList");
-    var ApiClient = Java.use('com.android.org.conscrypt.TrustManagerImpl');
-    ApiClient.checkTrustedRecursive.implementation = function(a1,a2,a3,a4,a5,a6) {
-        var k = array_list.$new(); 
-        return k;
+    try {
+        var array_list = Java.use("java.util.ArrayList");
+        var ApiClient = Java.use('com.android.org.conscrypt.TrustManagerImpl');
+        if (ApiClient.checkTrustedRecursive) {
+            logger("[*][*] Hooked checkTrustedRecursive")
+            ApiClient.checkTrustedRecursive.implementation = function (a1, a2, a3, a4, a5, a6) {
+                var k = array_list.$new();
+                return k;
+            }
+        } else {
+            logger("[*][-] checkTrustedRecursive not Found")
+        }
+    } catch(e) {
+        logger("[*][-] Failed to hook checkTrustedRecursive")
     }
 });
