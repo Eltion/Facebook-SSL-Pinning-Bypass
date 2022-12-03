@@ -1,6 +1,52 @@
 //https://github.com/Eltion/Facebook-SSL-Pinning-Bypass
 'use strict'
 
+function patch_x86(library) {
+    let found = false;
+    const pattern = "74 44 8b 8f d4 01 00 00";
+    Memory.scan(library.base, library.size, pattern, {
+        onMatch(address, size) {
+            found = true;
+            Memory.patchCode(address, 2, code => {
+                const cw = new X86Writer(code);
+                cw.putBytes([0x75, 0x44]);
+                cw.flush();
+            });
+            logger(`[*][+] Patched libcoldstart.so`);
+            return 'stop';
+        },
+        onComplete() {
+            if (!found) {
+                logger(`[*][-] Failed to find pattern: ${pattern}`);
+            }
+        }
+    });
+}
+
+
+function patch_arm64(library) {
+    let found = false;
+    const pattern = "ff ff 01 a9 ?? ?? 00 b4 80 82 4c 39";
+    Memory.scan(library.base, library.size, pattern, {
+        onMatch(address, size) {
+            found = true;
+            Memory.patchCode(address, 2, code => {
+                const cw = new Arm64Writer(code);
+                cw.skip(6);
+                cw.putBytes([0x00, 0xb5, 0x80, 0x82]);
+                cw.flush();
+            });
+            logger(`[*][+] Patched libcoldstart.so`);
+            return 'stop';
+        },
+        onComplete() {
+            if (!found) {
+                logger(`[*][-] Failed to find pattern: ${pattern}`);
+            }
+        }
+    });
+}
+
 function hook_proxygen_SSLVerification(library) {
     const functionName = "_ZN8proxygen15SSLVerification17verifyWithMetricsEbP17x509_store_ctx_stRKNSt6__ndk212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPNS0_31SSLFailureVerificationCallbacksEPNS0_31SSLSuccessVerificationCallbacksERKNS_15TimeUtilGenericINS3_6chrono12steady_clockEEERNS_10TraceEventE";
     try {
@@ -46,6 +92,11 @@ logger("[*][*] Waiting for library...");
 waitForModules(libs).then((lib) => {
     logger(`[*][+] Found ${lib.name} at: ${lib.base}`)
     hook_proxygen_SSLVerification(lib);
+    if (Process.arch == "arm64") {
+        patch_arm64(lib)
+    } else if (Process.arch == "ia32") {
+        patch_x86(lib)
+    }
 });
 
 //Universal Android SSL Pinning Bypass #2
@@ -62,7 +113,7 @@ Java.perform(function () {
         } else {
             logger("[*][-] checkTrustedRecursive not Found")
         }
-    } catch(e) {
+    } catch (e) {
         logger("[*][-] Failed to hook checkTrustedRecursive")
     }
 });
