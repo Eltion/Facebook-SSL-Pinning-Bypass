@@ -30,7 +30,7 @@ function patch_arm64(library) {
     Memory.scan(library.base, library.size, pattern, {
         onMatch(address, size) {
             found = true;
-            Memory.patchCode(address, 2, code => {
+            Memory.patchCode(address, 12, code => {
                 const cw = new Arm64Writer(code);
                 cw.skip(6);
                 cw.putBytes([0x00, 0xb5, 0x80, 0x82]);
