@@ -2,18 +2,18 @@
 
 Bypass Facebook SSL pinning on Android devices.  
 Supported ABIs: `x86`, `x86_64`, `armeabi-v7a`, `arm64-v8a`  
-Latest version: `v382.0.0.33.111`
+Latest version: `v396.1.0.28.104`
 
 If you like this project:  
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/eltimusa4q)
 
 ## Patched APK (No Root)
 
-[facebook-v382.0.0.33.111-x86.apk](https://github.com/Eltion/Facebook-SSL-Pinning-Bypass/releases/download/v382.0.0.33.111/facebook-v382.0.0.33.111-x86.apk)
+[facebook-v396.1.0.28.104-x86.apk](https://github.com/Eltion/Facebook-SSL-Pinning-Bypass/releases/download/v396.1.0.28.104/facebook-v396.1.0.28.104-x86.apk)
 
-[facebook-v382.0.0.33.111-armeabi-v7a.apk](https://github.com/Eltion/Facebook-SSL-Pinning-Bypass/releases/download/v382.0.0.33.111/facebook-v382.0.0.33.111-armeabi-v7a.apk)
+[facebook-v396.1.0.28.104-armeabi-v7a.apk](https://github.com/Eltion/Facebook-SSL-Pinning-Bypass/releases/download/v396.1.0.28.104/facebook-v396.1.0.28.104-armeabi-v7a.apk)
 
-[facebook-v382.0.0.33.111-arm64-v8a.apk](https://github.com/Eltion/Facebook-SSL-Pinning-Bypass/releases/download/v382.0.0.33.111/facebook-v382.0.0.33.111-arm64-v8a.apk)
+[facebook-v396.1.0.28.104-arm64-v8a.apk](https://github.com/Eltion/Facebook-SSL-Pinning-Bypass/releases/download/v396.1.0.28.104/facebook-v396.1.0.28.104-arm64-v8a.apk)
 
 [See all versions](https://github.com/Eltion/Facebook-SSL-Pinning-Bypass/releases/)
 
