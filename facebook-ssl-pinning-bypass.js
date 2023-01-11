@@ -23,6 +23,27 @@ function patch_x86(library) {
     });
 }
 
+function patch_arm(library) {
+    let found = false;
+    const pattern = "84 b1 95 f8 dc 01";
+    Memory.scan(library.base, library.size, pattern, {
+        onMatch(address, size) {
+            found = true;
+            Memory.patchCode(address, 4, code => {
+                const cw = new ArmWriter(code);
+                cw.putBytes([0x84, 0xb9, 0x95, 0xf8 ]);
+                cw.flush();
+            });
+            logger(`[*][+] Patched libcoldstart.so`);
+            //return 'stop';
+        },
+        onComplete() {
+            if (!found) {
+                logger(`[*][-] Failed to find pattern: ${pattern}`);
+            }
+        }
+    });
+}
 
 function patch_arm64(library) {
     let found = false;
@@ -96,6 +117,8 @@ waitForModules(libs).then((lib) => {
         patch_arm64(lib)
     } else if (Process.arch == "ia32") {
         patch_x86(lib)
+    } else if (Process.arch == "arm") {
+        patch_arm(lib);
     }
 });
 
