@@ -3,13 +3,13 @@
 
 function patch_x86(library) {
     let found = false;
-    const pattern = "74 44 8b 8f d4 01 00 00";
+    const pattern = "74 ?? 8b ?? d4 01 00 00";
     Memory.scan(library.base, library.size, pattern, {
         onMatch(address, size) {
             found = true;
-            Memory.patchCode(address, 2, code => {
+            Memory.patchCode(address, 1, code => {
                 const cw = new X86Writer(code);
-                cw.putBytes([0x75, 0x44]);
+                cw.putBytes([0x75]);
                 cw.flush();
             });
             logger(`[*][+] Patched libcoldstart.so`);
@@ -25,7 +25,7 @@ function patch_x86(library) {
 
 function patch_arm(library) {
     let found = false;
-    const pattern = "84 b1 95 f8 dc 01";
+    const pattern = "84 b1 ?? f8 dc 01";
     Memory.scan(library.base, library.size, pattern, {
         onMatch(address, size) {
             found = true;
@@ -52,6 +52,7 @@ function patch_arm64(library) {
         onMatch(address, size) {
             found = true;
             Memory.patchCode(address, 12, code => {
+                console.log(address.readByteArray(16));
                 const cw = new Arm64Writer(code);
                 cw.skip(6);
                 cw.putBytes([0x00, 0xb5, 0x80, 0x82]);
@@ -107,7 +108,7 @@ function logger(message) {
     });
 }
 
-const libs = ["libcoldstart.so", "libliger-native.so"]
+const libs = ["libcoldstart_1.so","libcoldstart.so", "libliger-native.so"]
 
 logger("[*][*] Waiting for library...");
 waitForModules(libs).then((lib) => {
